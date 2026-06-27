@@ -61,9 +61,9 @@ export default function LivestreamEvents() {
                 </div>
               </div>
               
-              <button className="w-full bg-[#0056D2] text-white hover:bg-blue-800 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
+              <a href="/live-classroom" className="w-full bg-[#0056D2] text-white hover:bg-blue-800 py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2">
                 Join Classroom
-              </button>
+              </a>
             </div>
           </div>
 
