@@ -64,7 +64,7 @@ export default function LoginModal({ isOpen, onClose, onLogin, username, setUser
           
           <button
             type="submit"
-            className="w-full bg-[#0056D2] text-white font-bold py-3 rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
+            className="w-full bg-[#0056D2] text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/30"
           >
             Login
           </button>

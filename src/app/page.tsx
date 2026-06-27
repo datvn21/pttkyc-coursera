@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Companies from '@/components/Companies';
 import InvestInCareer from '@/components/InvestInCareer';
+import LivestreamEvents from '@/components/LivestreamEvents';
 import Outcomes from '@/components/Outcomes';
 import CareerSkills from '@/components/CareerSkills';
 import SearchPrograms from '@/components/SearchPrograms';
@@ -22,6 +23,7 @@ export default function Home() {
       <Hero />
       <Companies />
       <InvestInCareer />
+      <LivestreamEvents />
       <Outcomes />
       <CareerSkills />
       <SearchPrograms />

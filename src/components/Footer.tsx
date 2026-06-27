@@ -57,13 +57,13 @@ export default function Footer() {
         <div>
           <h4 className="font-bold text-gray-900 mb-4">Mobile App</h4>
           <div className="flex flex-col gap-4">
-            <a href="#" className="bg-black text-white px-4 py-2.5 rounded-md flex items-center gap-2 hover:bg-gray-800 transition w-40">
+            <a href="#" className="bg-black text-white px-4 py-2.5 rounded-xl flex items-center gap-2 hover:bg-gray-800 transition w-40">
               <div className="flex flex-col">
                 <span className="text-[10px] leading-none">Download on the</span>
                 <span className="font-bold leading-none">App Store</span>
               </div>
             </a>
-            <a href="#" className="bg-black text-white px-4 py-2.5 rounded-md flex items-center gap-2 hover:bg-gray-800 transition w-40">
+            <a href="#" className="bg-black text-white px-4 py-2.5 rounded-xl flex items-center gap-2 hover:bg-gray-800 transition w-40">
               <div className="flex flex-col">
                 <span className="text-[10px] leading-none">GET IT ON</span>
                 <span className="font-bold leading-none">Google Play</span>

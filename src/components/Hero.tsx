@@ -14,7 +14,7 @@ export default function Hero() {
             Achieve your career goals with Coursera Plus
           </h1>
           
-          <button className="bg-[#0056D2] text-white font-medium px-6 py-3 rounded-md hover:bg-blue-700 transition shadow-sm">
+          <button className="bg-[#0056D2] text-white font-medium px-6 py-3 rounded-xl hover:bg-blue-700 transition shadow-sm">
             Search Coursera Plus
           </button>
         </div>
