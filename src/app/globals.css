@@ -14,4 +14,5 @@ body {
 
 button:hover {
   cursor: pointer;
+  box-shadow: none;
 }

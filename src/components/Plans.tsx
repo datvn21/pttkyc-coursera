@@ -15,7 +15,7 @@ export default function Plans() {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {/* Plan 1 */}
-        <div className="border border-gray-200 rounded-xl p-8 flex flex-col mt-8 relative bg-white">
+        <div className="border border-gray-200 rounded-xl p-8 flex flex-col mt-8 relative bg-white hover:shadow-lg transition duration-300">
           <h3 className="text-xl font-bold mb-2">Single learning program</h3>
           <p className="text-sm text-gray-600 mb-6 h-10">Learn a single topic or skill and earn a credential</p>
           
@@ -37,7 +37,7 @@ export default function Plans() {
         </div>
         
         {/* Plan 2 - Most Popular */}
-        <div className="border-2 border-[#0056D2] rounded-xl flex flex-col relative bg-white shadow-xl">
+        <div className="border-2 border-[#0056D2] rounded-xl flex flex-col relative bg-white hover:shadow-xl transition duration-300">
           <div className="bg-[#0056D2] text-white text-center py-1.5 text-xs font-bold uppercase rounded-t-lg">
             Most popular
           </div>
@@ -79,7 +79,7 @@ export default function Plans() {
         </div>
         
         {/* Plan 3 */}
-        <div className="border border-gray-200 rounded-xl p-8 flex flex-col mt-8 relative bg-white">
+        <div className="border border-gray-200 rounded-xl p-8 flex flex-col mt-8 relative bg-white hover:shadow-lg transition duration-300">
           <h3 className="text-xl font-bold mb-2">Coursera Plus Annual</h3>
           <p className="text-sm text-gray-600 mb-6 h-10">Combine flexibility and savings with long-term learning goals</p>
           

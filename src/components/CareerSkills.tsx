@@ -6,14 +6,14 @@ export default function CareerSkills() {
       <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-12">
         <div className="lg:w-1/4">
           <h2 className="text-3xl font-bold mb-6 text-gray-900">Career skills that work</h2>
-          <button className="border border-[#0056D2] text-[#0056D2] font-medium px-6 py-2.5 rounded-xl hover:bg-blue-50 transition bg-white shadow-sm">
+          <button className="border border-[#0056D2] text-[#0056D2] font-medium px-6 py-2.5 rounded-xl hover:bg-blue-50 transition bg-white hover:shadow-sm">
             Search Coursera Plus
           </button>
         </div>
         
         <div className="lg:w-3/4 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Card 1 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
             <div className="h-32 bg-[#0056D2] relative">
                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="AI in Healthcare" className="w-full h-full object-cover opacity-70" />
             </div>
@@ -28,7 +28,7 @@ export default function CareerSkills() {
           </div>
 
           {/* Card 2 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
             <div className="h-32 bg-gray-900 relative">
                <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bfce8?q=80&w=1974&auto=format&fit=crop" alt="Python" className="w-full h-full object-cover opacity-70" />
             </div>
@@ -43,7 +43,7 @@ export default function CareerSkills() {
           </div>
 
           {/* Card 3 */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
+          <div className="bg-white rounded-lg border border-gray-200 overflow-hidden flex flex-col hover:shadow-md transition cursor-pointer">
             <div className="h-32 bg-pink-600 relative">
               <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=2070&auto=format&fit=crop" alt="Prompt Engineering" className="w-full h-full object-cover opacity-70" />
             </div>
@@ -59,7 +59,7 @@ export default function CareerSkills() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-6 mt-6 flex justify-center lg:justify-end">
-        <button className="border border-[#0056D2] text-[#0056D2] font-medium px-4 py-2 rounded-xl hover:bg-blue-50 transition text-sm bg-white shadow-sm">
+        <button className="border border-[#0056D2] text-[#0056D2] font-medium px-4 py-2 rounded-xl hover:bg-blue-50 transition text-sm bg-white hover:shadow-sm">
           Show 8 more
         </button>
       </div>

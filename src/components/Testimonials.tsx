@@ -7,7 +7,7 @@ export default function Testimonials() {
         <h2 className="text-3xl font-bold mb-12">What subscribers are achieving through learning</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-md transition duration-300">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
                 <img src="https://i.pravatar.cc/150?img=47" alt="Abigail P." className="w-full h-full object-cover" />
@@ -19,7 +19,7 @@ export default function Testimonials() {
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-md transition duration-300">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
                 <img src="https://i.pravatar.cc/150?img=11" alt="Shi Jie F." className="w-full h-full object-cover" />
@@ -31,7 +31,7 @@ export default function Testimonials() {
             </p>
           </div>
           
-          <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-8 rounded-xl border border-gray-100 hover:shadow-md transition duration-300">
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
                 <img src="https://i.pravatar.cc/150?img=5" alt="Inés K." className="w-full h-full object-cover" />

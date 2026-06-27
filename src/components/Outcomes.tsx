@@ -7,7 +7,7 @@ export default function Outcomes() {
         <h2 className="text-4xl font-bold mb-8 leading-tight text-gray-900">
           Join the 91% of learners who achieved a positive career outcome, like new job opportunities, increased knowledge, and improved performance at work.¹
         </h2>
-        <button className="border border-[#0056D2] text-[#0056D2] font-medium px-6 py-3 rounded-xl hover:bg-blue-50 transition shadow-sm bg-white">
+        <button className="border border-[#0056D2] text-[#0056D2] font-medium px-6 py-3 rounded-xl hover:bg-blue-50 transition hover:shadow-sm bg-white">
           Search Coursera Plus
         </button>
       </div>

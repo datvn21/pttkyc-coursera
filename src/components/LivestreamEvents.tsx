@@ -27,7 +27,7 @@ export default function LivestreamEvents() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
           {/* Card 1: LIVE NOW */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col">
             <div className="h-44 bg-gray-900 relative overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" 
@@ -69,7 +69,7 @@ export default function LivestreamEvents() {
 
 
           {/* Card 2: UPCOMING */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col">
             <div className="h-44 bg-blue-900 relative overflow-hidden">
                <img 
                 src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop" 
@@ -109,7 +109,7 @@ export default function LivestreamEvents() {
           </div>
 
           {/* Card 3: TOMORROW */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col">
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 group flex flex-col">
             <div className="h-44 bg-emerald-900 relative overflow-hidden">
               <img 
                 src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600&auto=format&fit=crop" 
