@@ -450,7 +450,7 @@ export default function LiveClassroomMockup() {
         {/* Left cluster: back + brand + session info */}
         <div className="flex items-center gap-3 sm:gap-4 min-w-0">
           <Link
-            href="/"
+            href="/learn"
             aria-label="Back to home"
             className="p-2 text-gray-500 hover:text-coursera-blue hover:bg-blue-50 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-coursera-blue"
           >

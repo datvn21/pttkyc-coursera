@@ -7,6 +7,7 @@ import ContinueLearning from '@/components/ContinueLearning';
 import Hero from '@/components/Hero';
 import Companies from '@/components/Companies';
 import InvestInCareer from '@/components/InvestInCareer';
+import LivestreamEvents from '@/components/LivestreamEvents';
 import Outcomes from '@/components/Outcomes';
 import CareerSkills from '@/components/CareerSkills';
 import GuidedProjectsForYou from '@/components/GuidedProjectsForYou';
@@ -30,6 +31,7 @@ export default function LearnPage() {
       <InvestInCareer />
       <GuidedProjectsForYou />
       <PopularCourses />
+      <LivestreamEvents />
       <Outcomes />
       <CareerSkills />
       <TopSpecializations />

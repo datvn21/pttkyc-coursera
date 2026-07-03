@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Calendar, Clock, Users, ChevronRight, Bell } from "lucide-react";
 
 type LiveEventStatus = "live" | "upcoming" | "tomorrow";
@@ -17,6 +18,8 @@ type LiveEvent = {
   attendees?: number;
   href: string;
   imageUrl: string;
+  courseId?: string;
+  courseName?: string;
 };
 
 const events: LiveEvent[] = [
@@ -34,6 +37,8 @@ const events: LiveEvent[] = [
     href: "/live-classroom",
     imageUrl:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop",
+    courseId: "machine-learning",
+    courseName: "Machine Learning Specialization",
   },
   {
     id: "ux-workshop",
@@ -46,9 +51,11 @@ const events: LiveEvent[] = [
     status: "upcoming",
     dateLabel: "Tonight, June 27",
     timeLabel: "8:00 PM – 9:30 PM",
-    href: "/live/ux-workshop",
+    href: "/live-classroom",
     imageUrl:
       "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop",
+    courseId: "google-ux-design",
+    courseName: "Google UX Design",
   },
   {
     id: "risk-mitigation",
@@ -61,9 +68,11 @@ const events: LiveEvent[] = [
     status: "tomorrow",
     dateLabel: "Sunday, June 28",
     timeLabel: "9:00 AM – 11:00 AM",
-    href: "/live/risk-mitigation",
+    href: "/live-classroom",
     imageUrl:
       "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=600&auto=format&fit=crop",
+    courseId: "project-management",
+    courseName: "Google Project Management",
   },
 ];
 
@@ -107,10 +116,11 @@ function HostAvatar({
 }
 
 function EventCard({ event }: { event: LiveEvent }) {
+  const router = useRouter();
   const isLive = event.status === "live";
 
-  return (
-    <article className="flex flex-col bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full">
+  const cardContent = (
+    <>
       <div className="relative aspect-16/10 bg-gray-100 overflow-hidden">
         <img
           src={event.imageUrl}
@@ -179,7 +189,30 @@ function EventCard({ event }: { event: LiveEvent }) {
             {event.status === "tomorrow" ? "Register to join" : "Remind me"}
           </button>
         )}
+
+        {event.courseName && (
+          <button
+            type="button"
+            onClick={() => router.push(`/learn/${event.courseId}`)}
+            className="mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500 hover:text-coursera-blue transition-colors flex items-center gap-1 w-full"
+          >
+            <span className="truncate">From: {event.courseName}</span>
+            <ChevronRight size={12} />
+          </button>
+        )}
       </div>
+    </>
+  );
+
+  return (
+    <article className="flex flex-col bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300 h-full cursor-pointer">
+      {event.courseId ? (
+        <div onClick={() => router.push(`/learn/${event.courseId}`)} className="flex flex-col h-full">
+          {cardContent}
+        </div>
+      ) : (
+        cardContent
+      )}
     </article>
   );
 }

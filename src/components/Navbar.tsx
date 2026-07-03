@@ -4,7 +4,8 @@ import { Search, ChevronDown, Globe, Bell, LogOut } from 'lucide-react';
 
 export default function Navbar() {
   return (
-    <nav className="bg-white px-12 py-3 flex items-center justify-between border-b sticky top-0 z-50">
+    <nav className="bg-white px-4 sm:px-6 lg:px-8 py-3 border-b sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
       <div className="flex items-center gap-6">
         <div className="flex items-center">
           <Link href="/learn" className="text-[#0056D2] text-2xl font-bold tracking-tight">coursera</Link>
@@ -53,6 +54,7 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </nav>
   );
