@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { Search, ChevronDown, Globe, Bell, LogOut } from 'lucide-react';
 
 export default function Navbar() {
@@ -6,14 +7,15 @@ export default function Navbar() {
     <nav className="bg-white px-12 py-3 flex items-center justify-between border-b sticky top-0 z-50">
       <div className="flex items-center gap-6">
         <div className="flex items-center">
-          <span className="text-[#0056D2] text-2xl font-bold tracking-tight">coursera</span>
+          <Link href="/learn" className="text-[#0056D2] text-2xl font-bold tracking-tight">coursera</Link>
         </div>
 
         <div className="flex items-center gap-6 text-gray-600 font-medium text-sm">
           <button className="flex items-center gap-1 hover:text-blue-700 transition">
             Explore <ChevronDown size={14} />
           </button>
-          <a href="#" className="hover:text-blue-700 transition">My Learning</a>
+          <Link href="/learn" className="hover:text-blue-700 transition">My Learning</Link>
+          <Link href="/live-classroom" className="hover:text-blue-700 transition">Live Classroom</Link>
           <a href="#" className="hover:text-blue-700 transition">Degrees</a>
         </div>
 

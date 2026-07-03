@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -317,7 +323,7 @@ export default function CourseLearningPage() {
       <StickyTopBar
         courseTitle={course.title}
         progressPct={progressPct}
-        onBack={() => router.push("/")}
+        onBack={() => router.push("/learn")}
       />
 
       <main className="flex-1 max-w-[1400px] w-full mx-auto px-3 sm:px-5 lg:px-8 pt-8 pb-20 grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 lg:gap-8">
@@ -522,7 +528,7 @@ function StickyTopBar({
             className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-gray-500"
             aria-label="Breadcrumb"
           >
-            <Link href="/" className="hover:text-coursera-blue transition">
+            <Link href="/learn" className="hover:text-coursera-blue transition">
               Home
             </Link>
             <span aria-hidden className="text-gray-300">
@@ -676,7 +682,7 @@ function VideoPlayer({
       v.currentTime = pct * duration;
       setCurrentTime(v.currentTime);
     },
-    [duration]
+    [duration],
   );
 
   const setPlaybackSpeed = useCallback((speed: number) => {
@@ -707,7 +713,9 @@ function VideoPlayer({
   const fmt = (s: number) => {
     if (!Number.isFinite(s)) return "0:00";
     const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60).toString().padStart(2, "0");
+    const sec = Math.floor(s % 60)
+      .toString()
+      .padStart(2, "0");
     return `${m}:${sec}`;
   };
 
@@ -742,7 +750,7 @@ function VideoPlayer({
       v.currentTime = newTime;
       setCurrentTime(newTime);
     },
-    [duration]
+    [duration],
   );
 
   useEffect(() => {
@@ -833,199 +841,201 @@ function VideoPlayer({
         } pointer-events-none`}
       >
         <div className="pointer-events-auto">
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.01}
-          value={duration ? currentTime / duration : 0}
-          onChange={(e) => {
-            if (!duration) return;
-            seek(Number(e.target.value));
-          }}
-          className="w-full h-1.5 accent-coursera-blue cursor-pointer"
-          aria-label="Seek"
-        />
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={duration ? currentTime / duration : 0}
+            onChange={(e) => {
+              if (!duration) return;
+              seek(Number(e.target.value));
+            }}
+            className="w-full h-1.5 accent-coursera-blue cursor-pointer"
+            aria-label="Seek"
+          />
 
-        <div className="mt-2 flex items-center gap-2 sm:gap-3">
-          <button
-            onClick={togglePlay}
-            className="p-2 hover:bg-white/10 rounded-full transition"
-            aria-label={playing ? "Pause" : "Play"}
-          >
-            {playing ? (
-              <Pause size={18} fill="currentColor" />
-            ) : (
-              <Play size={18} fill="currentColor" />
-            )}
-          </button>
-
-          <div className="flex items-center gap-1 group/vol">
+          <div className="mt-2 flex items-center gap-2 sm:gap-3">
             <button
-              onClick={() => setMuted((m) => !m)}
-              className="p-2 hover:bg-white/10 bg-transparent rounded-full transition"
-              aria-label={muted ? "Unmute" : "Mute"}
-            >
-              {muted || volume === 0 ? (
-                <VolumeX size={18} />
-              ) : (
-                <Volume2 size={18} />
-              )}
-            </button>
-            <div className="relative h-6 flex items-center w-0 group-hover/vol:w-20 transition-[width] duration-200 ease-out overflow-hidden">
-              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 rounded-full bg-white/25" />
-              <div
-                className="absolute top-1/2 -translate-y-1/2 h-1 rounded-full bg-white"
-                style={{ width: `${(muted ? 0 : volume) * 100}%` }}
-              />
-              <input
-                type="range"
-                min={0}
-                max={1}
-                step={0.05}
-                value={muted ? 0 : volume}
-                onChange={(e) => {
-                  const v = Number(e.target.value);
-                  setVolume(v);
-                  if (v > 0) setMuted(false);
-                }}
-                className="absolute inset-0 w-full opacity-0 cursor-pointer"
-                aria-label="Volume"
-              />
-              <span
-                className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-white shadow pointer-events-none"
-                style={{
-                  left: `${(muted ? 0 : volume) * 100}%`,
-                  boxShadow: "0 0 0 1px rgba(0,0,0,0.4)",
-                }}
-                aria-hidden
-              />
-            </div>
-          </div>
-
-          {editingTime ? (
-            <input
-              type="text"
-              value={timeInput}
-              onChange={(e) => setTimeInput(e.target.value)}
-              onBlur={commitTimeEdit}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") commitTimeEdit();
-                if (e.key === "Escape") setEditingTime(false);
-              }}
-              className="w-16 bg-white/20 border border-white/40 rounded px-2 py-0.5 text-white text-xs font-mono text-center focus:outline-none focus:ring-1 focus:ring-white/60 tabular-nums"
-              autoFocus
-              aria-label="Edit current time"
-            />
-          ) : (
-            <button
-              type="button"
-              onClick={startEditingTime}
-              className="text-xs font-mono tabular-nums hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/60 rounded px-0.5"
-              aria-label="Click to edit current time"
-            >
-              {fmt(currentTime)}
-            </button>
-          )}
-          <span className="text-xs font-mono text-white/60 tabular-nums">
-            / {fmt(duration)}
-          </span>
-          <div className="flex items-center gap-0.5">
-            <button
-              type="button"
-              onClick={() => adjustTime(-10)}
-              className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-              aria-label="Rewind 10 seconds"
-            >
-              −10
-            </button>
-            <button
-              type="button"
-              onClick={() => adjustTime(10)}
-              className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-              aria-label="Forward 10 seconds"
-            >
-              +10
-            </button>
-          </div>
-
-          <div className="ml-auto flex items-center gap-1">
-            <div className="relative">
-              <button
-                onClick={() => {
-                  if (captionsOn) setCaptionsMenuOpen((o) => !o);
-                  else setCaptionsOn(true);
-                }}
-                className={`p-2 rounded-full transition ${
-                  captionsOn ? "bg-coursera-blue text-white" : "hover:bg-white/10"
-                }`}
-                aria-label="Captions"
-                title="Captions"
-              >
-                <Subtitles size={18} />
-              </button>
-              {captionsMenuOpen && (
-                <div className="absolute bottom-12 right-0 bg-gray-900/95 border border-white/10 backdrop-blur rounded-lg p-2 min-w-36 text-sm">
-                  <div className="px-2 py-1 text-xs text-gray-400 uppercase">
-                    Subtitles
-                  </div>
-                  {[
-                    { label: "Off", lang: "" },
-                    { label: "English", lang: "en" },
-                    { label: "Tiếng Việt", lang: "vi" },
-                  ].map((opt) => {
-                    const isActive =
-                      (!captionsOn && opt.lang === "") ||
-                      (opt.lang === "en" && captionsOn);
-                    return (
-                      <button
-                        key={opt.label}
-                        onClick={() => setCaptionLang(opt.lang)}
-                        className={`block w-full text-left px-3 py-1 rounded hover:bg-white/10 ${
-                          isActive ? "text-coursera-blue font-medium" : ""
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-            <div className="relative">
-              <button
-                onClick={() => setSettingsOpen((s) => !s)}
-                className="p-2 hover:bg-white/10 rounded-full transition"
-                aria-label="Settings"
-              >
-                <Settings size={18} />
-              </button>
-              {settingsOpen && (
-                <div className="absolute bottom-12 right-0 bg-gray-900/95 border border-white/10 backdrop-blur rounded-lg p-2 min-w-44 text-sm">
-                  <div className="px-2 py-1 text-xs text-gray-400 uppercase">
-                    Speed
-                  </div>
-                  {[0.5, 1, 1.25, 1.5, 2].map((s) => (
-                    <button
-                      key={s}
-                      onClick={() => setPlaybackSpeed(s)}
-                      className="block w-full text-left px-3 py-1 rounded hover:bg-white/10"
-                    >
-                      {s === 1 ? "Normal" : `${s}x`}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <button
-              onClick={toggleFullscreen}
+              onClick={togglePlay}
               className="p-2 hover:bg-white/10 rounded-full transition"
-              aria-label="Fullscreen"
+              aria-label={playing ? "Pause" : "Play"}
             >
-              <Maximize2 size={18} />
+              {playing ? (
+                <Pause size={18} fill="currentColor" />
+              ) : (
+                <Play size={18} fill="currentColor" />
+              )}
             </button>
+
+            <div className="flex items-center gap-1 group/vol">
+              <button
+                onClick={() => setMuted((m) => !m)}
+                className="p-2 hover:bg-white/10 bg-transparent rounded-full transition"
+                aria-label={muted ? "Unmute" : "Mute"}
+              >
+                {muted || volume === 0 ? (
+                  <VolumeX size={18} />
+                ) : (
+                  <Volume2 size={18} />
+                )}
+              </button>
+              <div className="relative h-6 flex items-center w-0 group-hover/vol:w-20 transition-[width] duration-200 ease-out overflow-hidden">
+                <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 rounded-full bg-white/25" />
+                <div
+                  className="absolute top-1/2 -translate-y-1/2 h-1 rounded-full bg-white"
+                  style={{ width: `${(muted ? 0 : volume) * 100}%` }}
+                />
+                <input
+                  type="range"
+                  min={0}
+                  max={1}
+                  step={0.05}
+                  value={muted ? 0 : volume}
+                  onChange={(e) => {
+                    const v = Number(e.target.value);
+                    setVolume(v);
+                    if (v > 0) setMuted(false);
+                  }}
+                  className="absolute inset-0 w-full opacity-0 cursor-pointer"
+                  aria-label="Volume"
+                />
+                <span
+                  className="absolute top-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-white shadow pointer-events-none"
+                  style={{
+                    left: `${(muted ? 0 : volume) * 100}%`,
+                    boxShadow: "0 0 0 1px rgba(0,0,0,0.4)",
+                  }}
+                  aria-hidden
+                />
+              </div>
+            </div>
+
+            {editingTime ? (
+              <input
+                type="text"
+                value={timeInput}
+                onChange={(e) => setTimeInput(e.target.value)}
+                onBlur={commitTimeEdit}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") commitTimeEdit();
+                  if (e.key === "Escape") setEditingTime(false);
+                }}
+                className="w-16 bg-white/20 border border-white/40 rounded px-2 py-0.5 text-white text-xs font-mono text-center focus:outline-none focus:ring-1 focus:ring-white/60 tabular-nums"
+                autoFocus
+                aria-label="Edit current time"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={startEditingTime}
+                className="text-xs font-mono tabular-nums hover:text-yellow-300 transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white/60 rounded px-0.5"
+                aria-label="Click to edit current time"
+              >
+                {fmt(currentTime)}
+              </button>
+            )}
+            <span className="text-xs font-mono text-white/60 tabular-nums">
+              / {fmt(duration)}
+            </span>
+            <div className="flex items-center gap-0.5">
+              <button
+                type="button"
+                onClick={() => adjustTime(-10)}
+                className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                aria-label="Rewind 10 seconds"
+              >
+                −10
+              </button>
+              <button
+                type="button"
+                onClick={() => adjustTime(10)}
+                className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+                aria-label="Forward 10 seconds"
+              >
+                +10
+              </button>
+            </div>
+
+            <div className="ml-auto flex items-center gap-1">
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    if (captionsOn) setCaptionsMenuOpen((o) => !o);
+                    else setCaptionsOn(true);
+                  }}
+                  className={`p-2 rounded-full transition ${
+                    captionsOn
+                      ? "bg-coursera-blue text-white"
+                      : "hover:bg-white/10"
+                  }`}
+                  aria-label="Captions"
+                  title="Captions"
+                >
+                  <Subtitles size={18} />
+                </button>
+                {captionsMenuOpen && (
+                  <div className="absolute bottom-12 right-0 bg-gray-900/95 border border-white/10 backdrop-blur rounded-lg p-2 min-w-36 text-sm">
+                    <div className="px-2 py-1 text-xs text-gray-400 uppercase">
+                      Subtitles
+                    </div>
+                    {[
+                      { label: "Off", lang: "" },
+                      { label: "English", lang: "en" },
+                      { label: "Tiếng Việt", lang: "vi" },
+                    ].map((opt) => {
+                      const isActive =
+                        (!captionsOn && opt.lang === "") ||
+                        (opt.lang === "en" && captionsOn);
+                      return (
+                        <button
+                          key={opt.label}
+                          onClick={() => setCaptionLang(opt.lang)}
+                          className={`block w-full text-left px-3 py-1 rounded hover:bg-white/10 ${
+                            isActive ? "text-coursera-blue font-medium" : ""
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div className="relative">
+                <button
+                  onClick={() => setSettingsOpen((s) => !s)}
+                  className="p-2 hover:bg-white/10 rounded-full transition"
+                  aria-label="Settings"
+                >
+                  <Settings size={18} />
+                </button>
+                {settingsOpen && (
+                  <div className="absolute bottom-12 right-0 bg-gray-900/95 border border-white/10 backdrop-blur rounded-lg p-2 min-w-44 text-sm">
+                    <div className="px-2 py-1 text-xs text-gray-400 uppercase">
+                      Speed
+                    </div>
+                    {[0.5, 1, 1.25, 1.5, 2].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setPlaybackSpeed(s)}
+                        className="block w-full text-left px-3 py-1 rounded hover:bg-white/10"
+                      >
+                        {s === 1 ? "Normal" : `${s}x`}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <button
+                onClick={toggleFullscreen}
+                className="p-2 hover:bg-white/10 rounded-full transition"
+                aria-label="Fullscreen"
+              >
+                <Maximize2 size={18} />
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
