@@ -43,6 +43,7 @@ import {
   Wifi,
   X,
   LinkIcon,
+  Languages,
 } from "lucide-react";
 
 type Lesson = {
@@ -655,6 +656,7 @@ function VideoPlayer({
   onEnded?: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const dubAudioRef = useRef<HTMLAudioElement | null>(null);
 
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
@@ -668,6 +670,9 @@ function VideoPlayer({
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [editingTime, setEditingTime] = useState(false);
   const [timeInput, setTimeInput] = useState("");
+  const [audioLanguage, setAudioLanguage] = useState<"en" | "vi">("en");
+  const [dubReady, setDubReady] = useState(false);
+  const [audioMenuOpen, setAudioMenuOpen] = useState(false);
 
   const togglePlay = useCallback(() => {
     const v = videoRef.current;
@@ -757,8 +762,114 @@ function VideoPlayer({
     const v = videoRef.current;
     if (!v) return;
     v.volume = volume;
-    v.muted = muted;
+    v.muted = audioLanguage === "vi" ? true : muted;
+  }, [volume, muted, audioLanguage]);
+
+  useEffect(() => {
+    const a = dubAudioRef.current;
+    if (!a) return;
+    a.volume = volume;
+    a.muted = muted;
   }, [volume, muted]);
+
+  // Sync dub audio playback with the video element.
+  useEffect(() => {
+    const v = videoRef.current;
+    const a = dubAudioRef.current;
+    if (!v || !a) return;
+
+    const startDub = () => {
+      if (audioLanguage !== "vi") return;
+      const drift = Math.abs(a.currentTime - v.currentTime);
+      if (drift > 0.25 || a.paused) a.currentTime = v.currentTime;
+      const tryPlay = () => {
+        const p = a.play();
+        if (p && typeof p.catch === "function") p.catch(() => undefined);
+      };
+      if (a.readyState >= 3) {
+        tryPlay();
+      } else {
+        const onReady = () => {
+          tryPlay();
+          a.removeEventListener("canplaythrough", onReady);
+          a.removeEventListener("canplay", onReady);
+        };
+        a.addEventListener("canplay", onReady);
+        a.addEventListener("canplaythrough", onReady);
+      }
+    };
+
+    const onPlay = () => startDub();
+    const onPause = () => a.pause();
+    const onSeeking = () => {
+      if (audioLanguage === "vi") a.currentTime = v.currentTime;
+    };
+    const onEnded = () => a.pause();
+
+    v.addEventListener("play", onPlay);
+    v.addEventListener("pause", onPause);
+    v.addEventListener("seeking", onSeeking);
+    v.addEventListener("ended", onEnded);
+    return () => {
+      v.removeEventListener("play", onPlay);
+      v.removeEventListener("pause", onPause);
+      v.removeEventListener("seeking", onSeeking);
+      v.removeEventListener("ended", onEnded);
+    };
+  }, [audioLanguage]);
+
+  // If user switches to VI while video is already playing, kick off dub audio.
+  useEffect(() => {
+    if (audioLanguage !== "vi") return;
+    const v = videoRef.current;
+    const a = dubAudioRef.current;
+    if (!v || !a) return;
+    if (!v.paused && a.paused) {
+      a.currentTime = v.currentTime;
+      const p = a.play();
+      if (p && typeof p.catch === "function") p.catch(() => undefined);
+    }
+  }, [audioLanguage]);
+
+  // Re-sync dub audio periodically to fight drift while playing.
+  useEffect(() => {
+    if (audioLanguage !== "vi") return;
+    const id = window.setInterval(() => {
+      const v = videoRef.current;
+      const a = dubAudioRef.current;
+      if (!v || !a || v.paused) return;
+      const drift = Math.abs(a.currentTime - v.currentTime);
+      if (drift > 0.4) a.currentTime = v.currentTime;
+    }, 2000);
+    return () => window.clearInterval(id);
+  }, [audioLanguage]);
+
+  // Click outside to close popover menus
+  useEffect(() => {
+    if (!captionsMenuOpen && !settingsOpen && !audioMenuOpen) return;
+    const handler = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest("[data-player-menu]")) {
+        setCaptionsMenuOpen(false);
+        setSettingsOpen(false);
+        setAudioMenuOpen(false);
+      }
+    };
+    window.addEventListener("click", handler);
+    return () => window.removeEventListener("click", handler);
+  }, [captionsMenuOpen, settingsOpen, audioMenuOpen]);
+
+  // Fallback: poll dub audio readyState in case events are missed
+  useEffect(() => {
+    if (dubReady) return;
+    const id = window.setInterval(() => {
+      const a = dubAudioRef.current;
+      if (a && a.readyState >= 2) {
+        setDubReady(true);
+      }
+    }, 500);
+    return () => window.clearInterval(id);
+  }, [dubReady]);
 
   useEffect(() => {
     const v = videoRef.current;
@@ -818,6 +929,18 @@ function VideoPlayer({
           src="/videos/subtitles/Vietnamese.vtt"
         />
       </video>
+
+      {/* Hidden dub audio track for voice dubbing */}
+      {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+      <audio
+        ref={dubAudioRef}
+        src="/videos/audio/Vietnamese.wav"
+        preload="auto"
+        onLoadedData={() => setDubReady(true)}
+        onCanPlay={() => setDubReady(true)}
+        onCanPlayThrough={() => setDubReady(true)}
+        onError={() => setDubReady(false)}
+      />
 
       {buffering && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
@@ -938,27 +1061,58 @@ function VideoPlayer({
             <span className="text-xs font-mono text-white/60 tabular-nums">
               / {fmt(duration)}
             </span>
-            <div className="flex items-center gap-0.5">
-              <button
-                type="button"
-                onClick={() => adjustTime(-10)}
-                className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-                aria-label="Rewind 10 seconds"
-              >
-                −10
-              </button>
-              <button
-                type="button"
-                onClick={() => adjustTime(10)}
-                className="w-6 h-6 rounded bg-white/10 hover:bg-white/30 flex items-center justify-center text-[10px] font-bold text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
-                aria-label="Forward 10 seconds"
-              >
-                +10
-              </button>
-            </div>
 
             <div className="ml-auto flex items-center gap-1">
-              <div className="relative">
+              <div className="relative" data-player-menu>
+                <button
+                  onClick={() => setAudioMenuOpen((o) => !o)}
+                  className={`p-2 rounded-full transition flex items-center gap-1 ${
+                    audioLanguage === "vi"
+                      ? "bg-coursera-blue text-white"
+                      : "hover:bg-white/10"
+                  }`}
+                  aria-label="Audio language"
+                  title={`Audio: ${audioLanguage === "vi" ? "Tiếng Việt" : "English"}`}
+                >
+                  <Languages size={18} />
+                  <span className="text-[10px] font-bold uppercase tracking-wide pr-1">
+                    {audioLanguage === "vi" ? "VI" : "EN"}
+                  </span>
+                </button>
+                {audioMenuOpen && (
+                  <div className="absolute bottom-12 right-0 bg-gray-900/95 border border-white/10 backdrop-blur rounded-lg p-2 min-w-40 text-sm">
+                    <div className="px-2 py-1 text-xs text-gray-400 uppercase">
+                      Audio
+                    </div>
+                    {[
+                      { label: "English (original)", code: "en" as const },
+                      {
+                        label: dubReady
+                          ? "Tiếng Việt (dub)"
+                          : "Tiếng Việt (loading...)",
+                        code: "vi" as const,
+                      },
+                    ].map((opt) => (
+                      <button
+                        key={opt.code}
+                        disabled={opt.code === "vi" && !dubReady}
+                        onClick={() => {
+                          setAudioLanguage(opt.code);
+                          setAudioMenuOpen(false);
+                        }}
+                        className={`block w-full text-left px-3 py-1 rounded hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed ${
+                          audioLanguage === opt.code
+                            ? "text-coursera-blue font-medium"
+                            : ""
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div className="relative" data-player-menu>
                 <button
                   onClick={() => {
                     if (captionsOn) setCaptionsMenuOpen((o) => !o);
@@ -1002,7 +1156,7 @@ function VideoPlayer({
                   </div>
                 )}
               </div>
-              <div className="relative">
+              <div className="relative" data-player-menu>
                 <button
                   onClick={() => setSettingsOpen((s) => !s)}
                   className="p-2 hover:bg-white/10 rounded-full transition"
