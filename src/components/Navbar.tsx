@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Search, ChevronDown, Globe, Bell, LogOut } from 'lucide-react';
+import { Search, ChevronDown, Globe, Bell } from 'lucide-react';
 
 export default function Navbar() {
   return (
@@ -16,6 +16,7 @@ export default function Navbar() {
             Explore <ChevronDown size={14} />
           </button>
           <Link href="/learn" className="hover:text-blue-700 transition">My Learning</Link>
+          <Link href="/learn-lists" className="hover:text-blue-700 transition">Learn Lists</Link>
           <Link href="/live-classroom" className="hover:text-blue-700 transition">Live Classroom</Link>
           <a href="#" className="hover:text-blue-700 transition">Degrees</a>
         </div>
